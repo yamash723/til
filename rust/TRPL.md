@@ -99,3 +99,63 @@ fn sample_function4(x: i32) -> i32 {
   x * 5
 }
 ```
+
+## Control Flow
+
+### `if`
+
+`if` expressions shouldn't use brackets.
+
+```rust
+if number > 5 {
+  println!("expression is true")
+}
+```
+
+`if` is expressions.
+
+```rust
+let condition = true;
+let number = if condition {
+  // shouldn't use semicolon
+  5
+} else {
+  1
+};
+```
+
+### `loop`
+
+`loop` is infinite loop expressions
+
+```rust
+loop {
+  println!("Looping!!!!");
+  break;
+}
+```
+
+### `for`
+
+every iteration.
+
+```rust
+let list = [10, 20, 30, 40];
+
+for item in list.iter() {
+  println!("{}", item);
+}
+```
+
+can use range.
+
+```rust
+for item in 0..5 {
+  println!("{}", item);
+}
+
+// reverse
+for item in (0..5).rev() {
+  println!("{}", item);
+}
+```

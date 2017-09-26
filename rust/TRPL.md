@@ -159,3 +159,28 @@ for item in (0..5).rev() {
   println!("{}", item);
 }
 ```
+
+## Ownership
+
+At the copy from other variables, this copy run by `Shallow copy` if value stored on heap.
+However, in the rust will it run `Move` not `Shallow copy`.
+
+```rust
+// allocated on stack. it can copy.
+let x = 5;
+let y = x;
+println!("x: {}, y: {}", x, y);
+
+// same. string literal is allocated on stack
+let name_1 = "Big-O";
+let name_2 = name_1;
+println!("name_1: {}, name_2: {}", name_1, name_2);
+
+// cannot. String::from is allocated on heap.
+// variables of allocated on heap. this code is not `shallow copy`, it's the move.
+let name_1 = String::from("Big-O");
+let name_2 = name_1;
+
+// this code be error at compile. `name_1` is moved. cannot use.
+println!("name_1: {}, name_2: {}", name_1, name_2);
+```

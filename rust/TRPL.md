@@ -183,4 +183,43 @@ let name_2 = name_1;
 
 // this code be error at compile. `name_1` is moved. cannot use.
 println!("name_1: {}, name_2: {}", name_1, name_2);
+
+// if should be deep copy, use common method of `clone`
+let name_1 = String::from("Big-O");
+let name_2 = name_1.clone();
+println!("name_1: {}, name_2: {}", name_1, name_2);
+```
+
+## Borrowing
+
+The same is true when call function with argument.
+
+```rust
+fn main() {
+    let name = String::from("Unicorn");
+    let full_name = add_prefix(name);
+
+    println!("before: {}", name); // this code is error. `name` is already moved.
+    println!("after: {}", full_name);
+}
+
+fn add_prefix(value: String) -> String {
+    format!("{}{}", "Gundam ", value)
+}
+```
+
+if you call the variables used for call function with argument, add `&` in argument type and variable at call.
+
+```rust
+fn main() {
+    let name = String::from("Unicorn");
+    let full_name = add_prefix(&name);
+
+    println!("before: {}", name); // this code is not error.
+    println!("after: {}", full_name);
+}
+
+fn add_prefix(value: &String) -> String {
+    format!("{}{}", "Gundam ", value)
+}
 ```

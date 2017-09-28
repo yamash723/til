@@ -223,3 +223,38 @@ fn add_prefix(value: &String) -> String {
     format!("{}{}", "Gundam ", value)
 }
 ```
+
+## Slice
+
+```rust
+fn main() {
+    let values = "apple google yahoo github";
+    let select = &values[1..11];
+    println!("{}", select);
+}
+```
+
+> pple googl
+
+## Struct
+
+defining structs
+
+```rust
+struct User {
+    email: String,
+    username: String,
+    sign_in_count: u64,
+    active: bool
+}
+
+let mut user = User {
+    username: String::from("Yamash"),
+    email: String::from("test.yamash@example.com"),
+    sign_in_count: 1,
+    active: true
+};
+
+// access to values by dot notation.
+user.active = false;
+```

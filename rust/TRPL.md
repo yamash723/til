@@ -4,7 +4,6 @@
 
 * Rust code uses snake case
 
-
 ## Variables
 
 ### Type
@@ -12,7 +11,6 @@
 ```rust
 let variables = 10;       // type inference
 let variables: u32 = 10;  // annotate the variables type
-
 ```
 
 ### Mutable
@@ -196,15 +194,15 @@ The same is true when call function with argument.
 
 ```rust
 fn main() {
-    let name = String::from("Unicorn");
-    let full_name = add_prefix(name);
+  let name = String::from("Unicorn");
+  let full_name = add_prefix(name);
 
-    println!("before: {}", name); // this code is error. `name` is already moved.
-    println!("after: {}", full_name);
+  println!("before: {}", name); // this code is error. `name` is already moved.
+  println!("after: {}", full_name);
 }
 
 fn add_prefix(value: String) -> String {
-    format!("{}{}", "Gundam ", value)
+  format!("{}{}", "Gundam ", value)
 }
 ```
 
@@ -212,15 +210,15 @@ if you call the variables used for call function with argument, add `&` in argum
 
 ```rust
 fn main() {
-    let name = String::from("Unicorn");
-    let full_name = add_prefix(&name);
+  let name = String::from("Unicorn");
+  let full_name = add_prefix(&name);
 
-    println!("before: {}", name); // this code is not error.
-    println!("after: {}", full_name);
+  println!("before: {}", name); // this code is not error.
+  println!("after: {}", full_name);
 }
 
 fn add_prefix(value: &String) -> String {
-    format!("{}{}", "Gundam ", value)
+  format!("{}{}", "Gundam ", value)
 }
 ```
 
@@ -228,9 +226,9 @@ fn add_prefix(value: &String) -> String {
 
 ```rust
 fn main() {
-    let values = "apple google yahoo github";
-    let select = &values[1..11];
-    println!("{}", select);
+  let values = "apple google yahoo github";
+  let select = &values[1..11];
+  println!("{}", select);
 }
 ```
 
@@ -242,19 +240,72 @@ defining structs
 
 ```rust
 struct User {
-    email: String,
-    username: String,
-    sign_in_count: u64,
-    active: bool
+  email: String,
+  username: String,
+  sign_in_count: u64,
+  active: bool
 }
 
 let mut user = User {
-    username: String::from("Yamash"),
-    email: String::from("test.yamash@example.com"),
-    sign_in_count: 1,
-    active: true
+  username: String::from("Yamash"),
+  email: String::from("test.yamash@example.com"),
+  sign_in_count: 1,
+  active: true
 };
 
 // access to values by dot notation.
 user.active = false;
+```
+
+field init
+
+```rust
+struct User {
+  email: String,
+  username: String,
+  sign_in_count: u64,
+  active: bool
+}
+
+fn build_user(username: String, email: String) -> User {
+  User {
+    // auto matching when the same variables name and struct field.
+    username,
+    email,
+    sign_in_count: 1,
+    active: true
+  }
+}
+
+let username = String::from("Yamash");
+let email = String::from("test.yamash@example.com");
+let user = build_user(username, email);
+
+println!("{}", user.username);
+```
+
+create instance from other instance.
+
+```rust
+  let user2 = User {
+    email: String::from("test2.yamash@example.com"),
+    // copy variables from instance of the `user1`
+    ..user1
+  };
+```
+
+### Implement
+
+```rust
+struct Rectangle {
+  length u32,
+  width u32,
+}
+
+impl Rectangle {
+  // first argment is `self`
+  fn area(&self) -> u32 {
+    self.length * self.wodth
+  }
+}
 ```

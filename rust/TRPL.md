@@ -309,3 +309,33 @@ impl Rectangle {
   }
 }
 ```
+
+## Match
+
+```rust
+let score = Some(10);
+match score {
+  Some(10) => print!("Win"),
+  Some(5) => print!("Draw"),
+  _ => print!("Lose")
+}
+```
+
+using `if let` pattern. recommend it when situation of the single match.
+
+```rust
+let score = Some(10);
+if let Some(10) = score {
+  print!("Win");
+}
+```
+
+match syntax is need `_` case.
+
+```rust
+// This code has error. not define `_` case.
+let score = Some(10);
+match score {
+  Some(10) => print!("Win")
+}
+```

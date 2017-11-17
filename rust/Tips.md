@@ -34,3 +34,33 @@ fn main() {
     }
 }
 ```
+
+Matching on Different Errors
+-----------------------------------
+
+```rust
+fn main() {
+    let f = File::open("sample.txt");
+    let f = match f {
+        Ok(file) => file,
+        Err(ref err) if err.kind() == ErrorKind::NotFound => {
+            panic!("file is not found: {:?}", err);
+        },
+        Err(err) => {
+            panic!("other error: {:?}", err);
+        }
+    };
+}
+```
+
+`ref` is referencing word.
+
+```rust
+let a = String::new();
+
+// This b & c is same.
+let ref b = a;
+let c = &a;
+```
+
+`Err(ref err)` is same to `let err = &error`

@@ -1,0 +1,9 @@
+[package]
+name = "adder"
+version = "0.1.0"
+authors = ["Shuhei Yamashita <b.e7472@gmail.com>"]
+
+[dependencies]
+add-one = { path = "add-one" }
+
+[workspace]

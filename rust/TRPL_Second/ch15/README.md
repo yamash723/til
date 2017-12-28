@@ -58,9 +58,22 @@ fn hello(name: &str) {
 }
 ```
 
-`MyBox` `String`共に`deref`を実装しているので、
+`MyBox` `String`共に`deref`を実装しているので、型強制が発生する
 
-* `&MyBox<String>`を`&String`に変換
-* `&String`を`&str`に変換
+なお、型変換をしない場合は次のような記法になる
 
-となる。なぜ変換するのかは要調査
+```rust
+fn main() {
+    let name = MyBox::new(String::from("Rust"));
+    // nameを参照外しし、そこからスライスを作成
+    hello(&(*name)[..]);
+}
+```
+
+#### 型強制
+
+* Rustの数少ない自動変換
+* `Deref<Target=T>`を実装している型`U`があるとき、`&U`は`%T`に自動的に変換される
+* よって次のような変換が発生する
+  * `&MyBox<String>`を`&String`に変換
+  * `&String`を`&str`に変換

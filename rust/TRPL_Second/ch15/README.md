@@ -82,3 +82,19 @@ fn main() {
 * 値がスコープ外になった時の動作をカスタマイズするトレイト
   * 例にあげると`Box<T>`は自分が参照しているヒープの値をクリアしている
     * スタックにある`Box<T>`がスコープから外れる → `Drop`トレイトにヒープの値を削除する処理を入れている
+* `Drop`トレイトで実装される`drop()`で値のクリアが行われている
+
+```rust
+fn main() {
+    let c = CustomSmartPointer { data: String::from("my stuff") };
+
+    // このような書き方をすると、明示的なdropをスコープを外れた時の自動dropで
+    // 計2回dropが発生してしまうためコンパイルエラーになる
+    c.drop();
+
+    // こうして変数ごとdropすること
+    drop(c);
+
+    println!("CustomSmartPointers dropped before the end of main.");
+}
+```

@@ -98,3 +98,14 @@ fn main() {
     println!("CustomSmartPointers dropped before the end of main.");
 }
 ```
+
+`Rc<T>`
+----------------------
+
+* `Rc`は`Reference counting`の略称
+* 所有権を共有するためのもの
+* シングルスレッドでのみ使用可能
+* `Rc::new()`で作成
+  * `Rc::clone(&xxxx)`で参照を増やすことができる
+  * `xxx.clone()`メソッドもあるが、こちらはディープコピー
+  * `Rc::strong_count(&a))`で現在の参照数を確認可能

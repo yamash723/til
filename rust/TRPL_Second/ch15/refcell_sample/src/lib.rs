@@ -50,6 +50,11 @@ mod tests {
 
     impl Messenger for MockMessenger {
         fn send(&self, message: &str) {
+            // // This code occurs pani! (two mutable borrow)
+            // let mut one_borrow = self.sent_messages.borrow_mut();
+            // let mut two_borrow = self.sent_messages.borrow_mut();
+            // one_borrow.push(String::from(message));
+            // two_borrow.push(String::from(message));
             self.sent_messages.borrow_mut().push(String::from(message));
         }
     }

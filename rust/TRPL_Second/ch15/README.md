@@ -121,3 +121,12 @@ fn main() {
 * `RefCell::new(vec![])`等で初期化
   * `xxx.borrow` で参照のみのものを取得
   * `xxx.borrow_mut` で所有権ありのものを取得
+
+Reference Cycle Can Leak Memory
+--------------------------------
+
+* Rustは意図的にメモリリークを起こすのが難しい言語
+* ただ`Rc<T>`と`RefCell<T>`を使い事で意図的に起こすことができる
+  * `reference_cycle_sample` 参照
+    * 
+    * 

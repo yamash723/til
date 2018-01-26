@@ -138,4 +138,5 @@ Reference Cycle Can Leak Memory
   * これが強い参照(強いという表現でいいのだろうか)`strong`
 * 弱い参照は`Rc::downgrade`によって作成される。`strong_count`ではなく`weak_count`が増加する
   * こちらは0にならなくても解放される
-  * そのため参照先を取得する時に`upgrade`を使うが、戻り値の方は`Option`になる
+  * そのため参照先を取得する時に`upgrade`を使うが、戻り値の方は`Option`になる(すでに開放済の場合もあるため)
+  

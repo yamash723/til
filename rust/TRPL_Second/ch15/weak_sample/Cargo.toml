@@ -1,0 +1,6 @@
+[package]
+name = "weak_sample"
+version = "0.1.0"
+authors = ["Shuhei Yamashita <shuhei.yamashita@ozinter.jp>"]
+
+[dependencies]

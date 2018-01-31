@@ -1,0 +1,4 @@
+[root]
+name = "message_passing_sample"
+version = "0.1.0"
+

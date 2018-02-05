@@ -10,7 +10,7 @@ struct SelectBox {
 
 impl Draw for SelectBox {
     fn draw(&self) {
-        // Code to actually draw a select box
+        println!("Drawing a select box");
     }
 }
 

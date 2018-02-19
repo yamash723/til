@@ -50,26 +50,54 @@ fn main() {
             unsafe {
                 (
                     slice::from_raw_parts_mut(ptr, mid),
-                    slice::from_raw_parts_mut(ptr.offset(mid as isize), len - mid)
+                    slice::from_raw_parts_mut(ptr.offset(mid as isize), len - mid),
                 )
             }
         }
+
     }
 
     {
         extern "C" {
             fn abs(input: i32) -> i32;
         }
-        
+
+
         unsafe {
             println!("Absolute value of -3 according to C: {}", abs(-3));
         }
-
     }
 
     {
+        #[no_mangle]
         pub extern "C" fn call_from_c() {
             println!("Just called a Rust function from C!");
         }
     }
+
+    static HELLO_WORLD: &str = "Hello World!";
+
+    {
+        println!("name is: {}", HELLO_WORLD);
+    }
+
+    static mut COUNTER: u32 = 0;
+
+    {
+        fn add_to_count(inc: u32) {
+            unsafe {
+                // 書き換え可能
+                COUNTER += inc;
+            }
+        }
+
+        add_to_count(3);
+
+        unsafe {
+            println!("COUNTER: {}", COUNTER);
+        }
+    }
 }
+
+unsafe trait Foo {}
+unsafe impl Foo for i32 {}

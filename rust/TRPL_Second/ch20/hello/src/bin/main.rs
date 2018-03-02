@@ -1,3 +1,7 @@
+extern crate hello;
+
+use hello::ThreadPool;
+
 use std::thread;
 use std::time::Duration;
 use std::fs::File;
@@ -10,8 +14,11 @@ fn main() {
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
+        let pool = ThreadPool::new(4);
 
-        handle_connection(stream);
+        pool.execute(|| {
+            handle_connection(stream);
+        });
     }
 }
 

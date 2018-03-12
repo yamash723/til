@@ -16,28 +16,45 @@ class Board extends React.Component {
     renderSquare(i) {
         return <Square
                 value = { this.props.squares[i] }
+                key = { i }
                 onClick = { () => this.props.onClick(i) } />;
+    }
+
+    renderBoard() {
+        const rows =
+            [0, 1, 2].map((row) => {
+                const squares = [];
+
+                [0, 1, 2].forEach((col) => {
+                    const number = row * 3 + col;
+                    squares.push(this.renderSquare(number));
+                });
+
+                return (
+                    <div key={row} className="board-row">
+                        {squares}
+                    </div>
+                );
+            });
+
+        return rows;
     }
 
     render() {
         return (
             <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+                {this.renderBoard()}
             </div>
+        );
+    }
+}
+
+class MoveOrderModeChangeButton extends React.Component {
+    render() {
+        return (
+            <button onClick={ this.props.onClick }>
+                { this.props.isAsc ? 'ASC' : 'DESC' }
+            </button>
         );
     }
 }
@@ -46,6 +63,7 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isHistoryOrderByAsc: true,
             history: [{
                 squares: Array(9).fill(null),
                 location: {
@@ -90,25 +108,38 @@ class Game extends React.Component {
         });
     }
 
+    toggleOrderMode() {
+        this.setState({
+            isHistoryOrderByAsc: !this.state.isHistoryOrderByAsc,
+        });
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
-        const move = history.map((step, move) => {
+        let move = history.map((step, move) => {
             const desc = move ?
-                'Go to move #' + move +
-                ' col: ' + step.location.col +
-                ' row: ' + step.location.row :
-                'Go to game start';
-
+            'Go to move #' + move +
+            ' col: ' + step.location.col +
+            ' row: ' + step.location.row :
+            'Go to game start';
+            
             const style = this.state.stepNumber === move ? { fontWeight: "bold" } : {};
-
+            
             return (
                 <li key={move}>
                     <button style={style} onClick = { () => this.jumpTo(move) }>{desc}</button>
                 </li>
             );
+        });
+        
+        const isOrderByAsc = this.state.isHistoryOrderByAsc;
+        move = move.sort((a, b) => {
+            if (a["key"] < b["key"]) return isOrderByAsc ? -1 :  1;
+            if (a["key"] > b["key"]) return isOrderByAsc ?  1 : -1;
+            return 0;
         });
 
         let status;
@@ -127,6 +158,9 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{ status }</div>
+                    <MoveOrderModeChangeButton
+                        isAsc = { this.state.isHistoryOrderByAsc }
+                        onClick = { () => this.toggleOrderMode() } />
                     <div>{ move }</div>
                 </div>
             </div>

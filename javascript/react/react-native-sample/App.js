@@ -1,29 +1,33 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 
 export default class App extends Component {
   render() {
     return (
-      <View>
-        <Text style={styles.red}>Just red</Text>
-        <Text style={styles.bigblue}>Just bigblue</Text>
-        <Text style={[styles.bigblue, styles.red]}>bigblue, then red</Text>
-        <Text style={[styles.red, styles.bigblue]}>red, then bigblue</Text>
+      <View style={{flex: 1}}>
+        {/*
+        <View style={{width:  50, height:  50, backgroundColor: 'powderblue'}} />
+        <View style={{width: 100, height: 100, backgroundColor: 'skyblue'}} />
+        <View style={{width: 150, height: 150, backgroundColor: 'steelblue'}} />
+        */}
+        <View style={{flex: 1, backgroundColor: 'powderblue'}} />
+        <View style={{flex: 2, backgroundColor: 'skyblue'}} />
+        <View style={{flex: 3, backgroundColor: 'steelblue'}} />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  bigblue: {
-    color: 'blue',
-    fontWeight: 'bold',
-    fontSize: 30,
-  },
-  red: {
-    color:  'red',
-  },
-});
+// const styles = StyleSheet.create({
+//   bigblue: {
+//     color: 'blue',
+//     fontWeight: 'bold',
+//     fontSize: 30,
+//   },
+//   red: {
+//     color:  'red',
+//   },
+// });
 
 // class Blink extends Component {
 //   constructor(props) {

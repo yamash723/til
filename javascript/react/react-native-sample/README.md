@@ -18,3 +18,7 @@ https://facebook.github.io/react-native/docs/tutorial.html
 * Styleの適応は`style`プロパティを使用して適応する
   * `style`に対して`StyleSheet.create`で作成したパラメータを渡す
   * その際に配列で複数渡せるが、同一パラメーターは後勝ちになる
+* `flex`プロパティを使用したデザイン
+  * 1つのView内にある要素は`flex`プロパティを使用して表示比率を変更できる
+  * `flex: 1`と`flex: 2`の場合は表示エリアの比率が1:2になる
+  * なお親コンポーネントが`flex``height``width`のいずれかのプロパティを指定していなければならない

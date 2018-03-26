@@ -15,3 +15,6 @@ https://facebook.github.io/react-native/docs/tutorial.html
   * 複数のコンポーネントを組み合わせるときはViewを使用する
     * Viewは入れ物
 * divなどのDOMは使用することができない。すべてコンポーネントを組み合わせる
+* Styleの適応は`style`プロパティを使用して適応する
+  * `style`に対して`StyleSheet.create`で作成したパラメータを渡す
+  * その際に配列で複数渡せるが、同一パラメーターは後勝ちになる

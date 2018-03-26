@@ -138,3 +138,43 @@ export default class App extends Component {
   }
 }
 ```
+
+### Layout with Flex
+
+* `flexDirection`
+  * Flex内の配置順方向を指定
+  * `row` `column`
+  * 指定する場合は親コンポーネントから
+* `justifyContent`
+  * Flex内要素の配置方法
+  * `flex-start` `center` `flex-end` `space-around` `space-between` `space-evenly`
+  * 間にスペースを挟んだりなどの指定が可能
+* `alignItems`
+  * Flex内要素の配置場所
+  * `flex-start` `center` `flex-end` `stretch`
+
+```javascript
+export default class App extends Component {
+  render() {
+    return (
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ width: 50, height: 50, backgroundColor: 'powderblue' }} />
+          <View style={{ width: 50, height: 50, backgroundColor: 'skyblue' }} />
+          <View style={{ width: 50, height: 50, backgroundColor: 'steelblue' }} />
+        </View>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+          <View style={{ width: 50, height: 50, backgroundColor: 'powderblue' }} />
+          <View style={{ width: 50, height: 50, backgroundColor: 'skyblue' }} />
+          <View style={{ width: 50, height: 50, backgroundColor: 'steelblue' }} />
+        </View>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ width: 50, height: 50, backgroundColor: 'powderblue' }} />
+          <View style={{ width: 50, height: 50, backgroundColor: 'skyblue' }} />
+          <View style={{ width: 50, height: 50, backgroundColor: 'steelblue' }} />
+        </View>
+      </View>
+    );
+  }
+}
+```

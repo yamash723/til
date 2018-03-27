@@ -212,6 +212,8 @@ export default class App extends Component {
 ### Handling Touches
 
 * `onPress`でタップ
+* `color`で色の指定が可能
+* `title`でボタンの名称
 
 ```javascript
 export default class App extends Component {
@@ -227,3 +229,4 @@ export default class App extends Component {
   }
 }
 ```
+

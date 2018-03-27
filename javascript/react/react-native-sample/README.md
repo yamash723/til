@@ -230,3 +230,18 @@ export default class App extends Component {
 }
 ```
 
+* Buttonでなかなえない場合は`Touchable*****`のコンポーネントを使用
+  * `TouchableHighlight`
+  * `TouchableOpacity`
+  * `TouchableNativeFeedback`
+  * `TouchableWithoutFeedback`
+  * `TouchableHighlight`
+* 自分で好きな要素にタップイベントを設定できる
+
+```javascript
+<TouchableHighlight onPress={this._onPressButton} onLongPress={this._onLongPressButton} underlayColor="white">
+  <View style={styles.button}>
+    <Text style={styles.buttonText}>Touchable with Long Press</Text>
+  </View>
+</TouchableHighlight>
+```

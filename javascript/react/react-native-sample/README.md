@@ -203,7 +203,25 @@ export default class App extends Component {
         <Text style={{padding: 10, fontSize: 42}}>
           {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
         </Text>
-        
+      </View>
+    );
+  }
+}
+```
+
+### Handling Touches
+
+* `onPress`でタップ
+
+```javascript
+export default class App extends Component {
+  render() {
+    return (
+      <View style={{ padding: 10 }}>
+        <Button
+          onPress={() => { Alert.alert('You tapped the button!'); }}
+          title="Press me"
+        />
       </View>
     );
   }

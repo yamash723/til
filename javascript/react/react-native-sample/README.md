@@ -275,6 +275,16 @@ export default class App extends Component {
       * リスト内に表示するリスト
     * `renderItem`
       * 各行内で表示するコンテンツ。JSX
+* `SectionList`
+  * 電話帳のようにグループ分けされているリスト
+  * iOSの`UITableViews`のようなもの
+  * `props`
+    * `sections`
+      * リスト内に表示するリスト。各セクション別に表示するコンテンツをまとめた配列を`data`として持たねばならない
+    * `renderSectionHeader`
+      * 各セクションのヘッダー内容
+    * `keyExtractor`
+      * 各アイテムの識別用keyの作成。オプショナル
 
 ```javascript
 <View style={styles.containar}>
@@ -290,6 +300,21 @@ export default class App extends Component {
       {key: 'Julie'},
     ]}
     renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+    />
+</View>
+```
+
+```javascript
+<View style={styles.containar}>
+  <SectionList
+    sections={[
+      {title: 'D', data: ['Devin']},
+      {title: 'J', data: ['Jackson','James','Joel','John','Jillian','Jimmy','Julie']},
+    ]}
+    renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+    renderSectionHeader={({section}) =>
+    <Text style={styles.sectionHeader}>{section.title}</Text>}
+    keyExtractor={(item, index) => index}
     />
 </View>
 ```

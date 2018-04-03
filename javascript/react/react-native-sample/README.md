@@ -245,3 +245,20 @@ export default class App extends Component {
   </View>
 </TouchableHighlight>
 ```
+
+### Using a ScrollView
+
+* 内部の要素をスクロール付きで表示
+* ただし、画面に表示していなくても内部要素をすべてレンダリングしてしまうことに注意
+  * 限られたコンテンツを表示するときに使用するのが望ましい
+
+```javascript
+<ScrollView>
+  <Text style={{fontSize: 96}}>Scroll me plz.</Text>
+  <Text style={{fontSize:96}}>If you like</Text>
+  <Text style={{fontSize:96}}>Scrolling down</Text>
+  <Text style={{fontSize:96}}>What's the best</Text>
+  <Text style={{fontSize:96}}>Framework around?</Text>
+  <Text style={{fontSize:80}}>React Native</Text>
+</ScrollView>
+```

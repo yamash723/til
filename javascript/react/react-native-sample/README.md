@@ -262,3 +262,34 @@ export default class App extends Component {
   <Text style={{fontSize:80}}>React Native</Text>
 </ScrollView>
 ```
+
+### Using List Views
+
+* リストの表現は通常`FlatList`か`SectionList`を使用する
+* `FlatList`
+  * 画面上に表示している内容のみをレンダリング
+  * 時間経過と共に内容の数が変化するものに向いている
+    * TwitterのTLなど？
+  * `props`
+    * `data`
+      * リスト内に表示するリスト
+    * `renderItem`
+      * 各行内で表示するコンテンツ。JSX
+
+```javascript
+<View style={styles.containar}>
+  <FlatList
+    data={[
+      {key: 'Devin'},
+      {key: 'Jackson'},
+      {key: 'James'},
+      {key: 'Joel'},
+      {key: 'John'},
+      {key: 'Jillian'},
+      {key: 'Jimmy'},
+      {key: 'Julie'},
+    ]}
+    renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+    />
+</View>
+```

@@ -318,3 +318,29 @@ export default class App extends Component {
     />
 </View>
 ```
+
+### Networking
+
+* `Fetch`
+* `XMLHttpRequest`
+* `WebSocket`
+
+```javascript
+componentDidMount(){
+  return fetch('https://facebook.github.io/react-native/movies.json')
+    .then((response) => response.json())
+    .then((responseJson) => {
+
+      this.setState({
+        isLoading: false,
+        dataSource: responseJson.movies,
+      }, function(){
+
+      });
+
+    })
+    .catch((error) =>{
+      console.error(error);
+    });
+}
+```

@@ -97,3 +97,47 @@ for i, v := range pow { }
 for _, v := range pow { }
 for i := range pow { }
 ```
+
+Maps
+-----------------
+
+* キーと値を関連付ける辞書型
+* 型の表現は`map[キーの型]値の型`
+* ゼロ値は`nil`
+* リテラル以外にも`make`関数で初期化したものを作成可能
+  * 単純な型名だけをリテラルで渡しているのならば型を省略可能
+* 要素の削除は`delete`
+* 要素の存在チェックは2つめの戻り値で判定
+  * `elem, ok := m[key]`
+  * 存在する場合は`ok == true`
+
+```golang
+var m map[string]int
+m = make(map[string]int)
+
+mp := map[string]SimpleStruct{
+  "A": {1, 2}
+}
+
+delete(mp, "A")
+```
+
+Function
+--------------
+
+* 関数も第一級オブジェクトのように引数で渡すことが可能
+* 関数はクロージャ。クロージャ内で使用されている変数へバインドされる
+
+```golang
+func add(x, y int, fn func(int, int) int) int {
+  return fn(x, y)
+}
+
+func adder() func(int) int {
+  sum := 0
+  return func(x int) int {
+    sum += x
+    return sum // sumにバインドされる
+  }
+}
+```

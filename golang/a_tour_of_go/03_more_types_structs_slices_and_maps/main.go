@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func main() {
 	{
@@ -112,11 +115,67 @@ func main() {
 	}
 
 	{
-
 		fmt.Println("---------- Range ----------")
 		pow := []int{1, 2, 4, 8, 16, 32, 64, 128}
 		for i, v := range pow {
 			fmt.Printf("2**%d = %d\n", i, v)
+		}
+	}
+
+	{
+		fmt.Println("---------- Maps ----------")
+		var m map[string]VertexF
+		m = make(map[string]VertexF)
+		m["Bell Labs"] = VertexF{
+			40.68433, -74.39967,
+		}
+		fmt.Println(m["Bell Labs"])
+
+		var mp = map[string]VertexF{
+			"Bell Labs": VertexF{
+				40.68433, -74.39967,
+			},
+			"Google": VertexF{
+				37.42202, -122.08408,
+			},
+			"Apple": {
+				37.33224, -122.01319,
+			},
+		}
+
+		delete(mp, "Google")
+
+		if _, ok := mp["Google"]; !ok {
+			fmt.Println("Google is deteled")
+		}
+
+		fmt.Println(mp)
+	}
+
+	{
+		fmt.Println("---------- Function ----------")
+		hypot := func(x, y float64) float64 {
+			return math.Sqrt(x*x + y*y)
+		}
+		fmt.Println(hypot(5, 12))
+
+		fmt.Println(compute(hypot))
+		fmt.Println(compute(math.Pow))
+
+		adder := func() func(int) int {
+			sum := 0
+			return func(x int) int {
+				sum += x
+				return sum
+			}
+		}
+
+		pos, neg := adder(), adder()
+		for i := 0; i < 10; i++ {
+			fmt.Println(
+				pos(i),
+				neg(-2*i),
+			)
 		}
 	}
 }
@@ -126,6 +185,15 @@ type Vertex struct {
 	Y int
 }
 
+type VertexF struct {
+	X float32
+	Y float32
+}
+
 func printSlice(s string, x []int) {
 	fmt.Printf("%s len=%d cap=%d %v\n", s, len(x), cap(x), x)
+}
+
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
 }

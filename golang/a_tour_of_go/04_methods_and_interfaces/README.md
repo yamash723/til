@@ -67,3 +67,74 @@ func (i *Int) M() int {
 
 interface {}
 ```
+
+Type assertions
+--------------------------
+
+* 型アサーション。インターフェースの値の基になる具体的な値を利用する手段
+* `t := i.(string)`で使用
+  * インターフェース値のiを`string`として取得
+  * この時に型が違う場合はpanicする
+* `t, ok := i.(string)`とすることで安全に取得することができる
+  * `i`が`string`を保持していた場合は`t`に値、`ok`に`true`
+  * 肘していなければ`i`はゼロ値となり`ok`は`false`となる
+
+```golang
+var s interface{} = "Hello"
+
+f, ok := s.(string)
+```
+
+Type switches
+-----------------
+
+* 型アサーションを直列に使用する
+* `switch v := i.(type)`とすることで、後述する`case`に設定した型との比較が行われる
+
+```golang
+switch v := i.(type) {
+  case int:
+  case string:
+  default:
+}
+```
+
+Stringers
+----------------------
+
+* 文字列を返す`String()`を持つインターフェース
+* fmtパッケージなどで変数を文字出力するため実装
+
+```golang
+func (s Str) String() string {
+  // ......
+}
+```
+
+Errors
+-------------------
+
+* エラーの状態を表す組み込みインターフェース
+
+```golang
+
+func (e *T) Error() string {
+  // ......
+}
+```
+
+Readers
+---------------
+
+* `io`パッケージのデータストリームを読むためのインターフェース
+* ストリームの終端に到達したら`io.EOF`のエラーが帰ってくる
+
+```golang
+b := make([]byte, 8)
+for {
+  n, err := r.Read(b)
+  if err == io.EOF {
+    break
+  }
+}
+```

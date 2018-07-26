@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"math"
+	"strings"
+	"time"
 )
 
 type Vertex struct {
@@ -46,6 +49,45 @@ func (t *T) M() {
 	fmt.Println(t.S)
 }
 
+// Type switches
+func doSwitch(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
+
+// Stringers
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) String() string {
+	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+}
+
+// Errors
+type MyError struct {
+	When time.Time
+	What string
+}
+
+func (e *MyError) Error() string {
+	return fmt.Sprintf("at %v, %s", e.When, e.What)
+}
+
+func run() error {
+	return &MyError{
+		time.Now(),
+		"it didn't work",
+	}
+}
+
 func main() {
 	{
 		// Methods
@@ -75,5 +117,52 @@ func main() {
 		fmt.Printf("(%v, %T)\n", x, x)
 		x = "string"
 		fmt.Printf("(%v, %T)\n", x, x)
+	}
+	{
+		// Type assertions
+		var i interface{} = "Hello World"
+		s := i.(string)
+		fmt.Println(s)
+
+		s, ok := i.(string)
+		fmt.Println(s, ok)
+
+		f, ok := i.(float64)
+		fmt.Println(f, ok)
+
+		// error
+		// f := i.(float64)
+		// fmt.Println(f)
+	}
+	{
+		// Type switches
+		doSwitch(21)
+		doSwitch("hello")
+		doSwitch(true)
+	}
+	{
+		// Stringers
+		a := Person{"Arthur Dent", 42}
+		z := Person{"Zaphod Beeblebrox", 9001}
+		fmt.Println(a, z)
+	}
+	{
+		// Errors
+		if err := run(); err != nil {
+			fmt.Println(err)
+		}
+	}
+	{
+		// Reader
+		r := strings.NewReader("Hello, Reader!")
+		b := make([]byte, 8)
+		for {
+			n, err := r.Read(b)
+			fmt.Printf("n = %v err = %v b = %v\n", n, err, b)
+			fmt.Printf("b[:n] = %q\n", b[:n])
+			if err == io.EOF {
+				break
+			}
+		}
 	}
 }

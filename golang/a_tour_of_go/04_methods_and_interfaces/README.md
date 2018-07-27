@@ -138,3 +138,16 @@ for {
   }
 }
 ```
+
+Images
+-------------------
+
+* 2D画像用ライブラリの`images`が定義しているインターフェース
+
+```golang
+type Image interface {
+    ColorModel() color.Model
+    Bounds() Rectangle
+    At(x, y int) color.Color
+}
+```

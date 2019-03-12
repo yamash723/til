@@ -2,6 +2,7 @@
   <section class="container">
     <div>
       <logo />
+      <HelloWorld />
       <h1 class="title">
         book-search-app
       </h1>
@@ -26,10 +27,12 @@
 
 <script>
 import Logo from '~/components/Logo.vue'
+import HelloWorld from '~/components/HelloWorld.vue'
 
 export default {
   components: {
-    Logo
+    Logo,
+    HelloWorld
   }
 }
 </script>

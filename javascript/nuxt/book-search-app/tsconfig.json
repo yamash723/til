@@ -1,11 +1,13 @@
 {
   "extends": "@nuxt/typescript",
   "compilerOptions": {
+    "paths": { "*": ["types/*"] },
     "baseUrl": ".",
     "experimentalDecorators": true,
     "allowJs": true,
     "types": [
       "@types/node",
+      "@types/webpack",
       "@nuxt/vue-app"
     ]
   }

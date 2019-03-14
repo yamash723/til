@@ -4,16 +4,20 @@ module.exports = {
     browser: true,
     node: true
   },
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@typescript-eslint/parser'
   },
   extends: [
     '@nuxtjs',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   plugins: [
-    'prettier'
+    'prettier',
+    '@typescript-eslint'
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    "@typescript-eslint/no-unused-vars": "error"
+  }
 }

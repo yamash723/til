@@ -167,6 +167,9 @@ kubectl apply -f redis-pod.yaml
 CLI各種操作方法
 
 ```
+# ネームスペースの作成
+kubectl create namespace
+
 # リソースの一覧を表示
 kubectl get nodes
 kubectl get service

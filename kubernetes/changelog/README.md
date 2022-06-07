@@ -19,25 +19,28 @@ K8sのChangeLogを読んでいく。なお読むのは1.19以降のみ。
   - 既存のものは有効化のまま
 - ストレージプラグインの移行作業進行中
 
-- GA
-  - ストレージ容量のトラッキング
-  - 自動ボリューム拡張
-  - NonPreemptingPriority
-    - Pod preemptionの有効・無効を管理するオプション
-- Beta
-  - OpenApi v3でAPIを公開する機能
-  - gRPC probe機能
-    - HTTPエンドポイントの公開
-    - startup/liveness/readiness probeを設定可能
-  - kubeletのimage credential providersのサポート
-- Alpha
-  - リリース成果物に対するcosignによる署名
-    - 実験的なサポート
-    - SLSA準拠関連
-  - Contextual Logging
-    - 関数の呼び出し元がロギングの各種設定を制御（出力の書式設定、詳細度、追加の値、名前）
-  - ClusterIP用のIPアドレスソフトリザーブ
-    - 特性に応じて静的/動的にIPアドレスを割り当てる際に衝突リスクを軽減できる
+### GA
+
+- ストレージ容量のトラッキング
+- 自動ボリューム拡張
+- NonPreemptingPriority
+  - Pod preemptionの有効・無効を管理するオプション
+### Beta
+
+- OpenApi v3でAPIを公開する機能
+- gRPC probe機能
+  - HTTPエンドポイントの公開
+  - startup/liveness/readiness probeを設定可能
+- kubeletのimage credential providersのサポート
+### Alpha
+
+- リリース成果物に対するcosignによる署名
+  - 実験的なサポート
+  - SLSA準拠関連
+- Contextual Logging
+  - 関数の呼び出し元がロギングの各種設定を制御（出力の書式設定、詳細度、追加の値、名前）
+- ClusterIP用のIPアドレスソフトリザーブ
+  - 特性に応じて静的/動的にIPアドレスを割り当てる際に衝突リスクを軽減できる
 
 ## v1.23.0
 
@@ -51,18 +54,21 @@ K8sのChangeLogを読んでいく。なお読むのは1.19以降のみ。
 - kube-schedulerの複数拡張点を持つプラグインの設定を簡略化
 - CSI Migrationの更新
 
-- GA
-  - IPv4/IPv6 デュアルスタックネットワーキング
-  - HorizontalPodAutoscaler v2
-    - 自動スケールアウト
-  - Generic ephemeral volumes
-  - Skip Volume Ownership
-    - マウント次の再帰的なパーミッション変更をスキップ
-  - CSIドライバのfsGroupのパーミッション宣言機能
-- Beta
-  - PodSecurity
-    - PodSecurityPolicyの代替
-  - 構造化ロギング
+### GA
+
+- IPv4/IPv6 デュアルスタックネットワーキング
+- HorizontalPodAutoscaler v2
+  - 自動スケールアウト
+- Generic ephemeral volumes
+- Skip Volume Ownership
+  - マウント次の再帰的なパーミッション変更をスキップ
+- CSIドライバのfsGroupのパーミッション宣言機能
+
+### Beta
+
+- PodSecurity
+  - PodSecurityPolicyの代替
+- 構造化ロギング
 
 ## v1.22.0
 
@@ -74,19 +80,22 @@ K8sのChangeLogを読んでいく。なお読むのは1.19以降のみ。
 - Windows向け開発ツールの提供
 - etcdのバージョンを3.5.0へ更新
 
-- GA
-  - Kubernetesクライアントのcredential plugin
-  - Server-side Apply
-    - Applyする際にクライアントサイドではなく文字通りサーバーサイドで差分計算をする
-    - フィールドの所有者をトラッキングするマージアルゴリズム
-  - CSIServiceAccountToken
-- Alpha
-  - kubeadmのコントロールプレーンを非rootで実行可能
-  - Kubernetesノードのシステムスワップサポート
-  - クラスターレベルでのなseccompのデフォルト設定
-  - メモリの割り当てをコントロール&分離するためにAPI提供
-  - エフェメラルコンテナのAPI変更 & 改善
-    - 新しいAPIになったので `kubectl` が古いと新しいAPIは呼べないことに注意
+### GA
+
+- Kubernetesクライアントのcredential plugin
+- Server-side Apply
+  - Applyする際にクライアントサイドではなく文字通りサーバーサイドで差分計算をする
+  - フィールドの所有者をトラッキングするマージアルゴリズム
+- CSIServiceAccountToken
+
+### Alpha
+
+- kubeadmのコントロールプレーンを非rootで実行可能
+- Kubernetesノードのシステムスワップサポート
+- クラスターレベルでのなseccompのデフォルト設定
+- メモリの割り当てをコントロール&分離するためにAPI提供
+- エフェメラルコンテナのAPI変更 & 改善
+  - 新しいAPIになったので `kubectl` が古いと新しいAPIは呼べないことに注意
 
 ## v1.21.0
 
@@ -103,13 +112,16 @@ K8sのChangeLogを読んでいく。なお読むのは1.19以降のみ。
   - 複数コンテナを含むPodの場合、コンテナリストの先頭に対してコマンドが実行されるので、意図しないコマンド実行を引き起こしていた
 - リリースタイムライン内kubeletが構造化ロギングを採用
 
-- GA
-  - Secret / ConfigMapのイミュータブル化
-- Beta
-  - ストレージ容量のトラッキング
-  - Generic ephemeral volumes
-  - CSIServiceAccountToken
-  - CSIヘルスモニタリング（Second Alpha）
+### GA
+
+- Secret / ConfigMapのイミュータブル化
+
+### Beta
+
+- ストレージ容量のトラッキング
+- Generic ephemeral volumes
+- CSIServiceAccountToken
+- CSIヘルスモニタリング（Second Alpha）
 
 ## v1.20.0
 
@@ -126,35 +138,40 @@ K8sのChangeLogを読んでいく。なお読むのは1.19以降のみ。
 - Cloud Controller Managerのバイナリ非提供
   - 各クラウドプロバイダが自分たちで提供することを期待
 
-- GA
-  - SupportNodePidsLimit / SupportPodPidsLimit
-    - Node / Pod単位での消費可能なPID数の制限
-  - CSI Volume Snapshot
-  - TokenRequest / TokenRequestProjection
-    - ServiceAccountで発行したトークンをPodのVolumeに動的にマウントする機能
-  - node.k8s.io APIグループがv1beta1からv1に昇格
-- Beta
-  - API Priority / Fairness
-    - kube-apiserverが優先度に応じて受けたリクエストをカテゴライズするもの
-  - Non-recursive Volume Ownership (FSGroup)
-    - fsgroup設定時であっても、必要な場合のみ再帰的なパーミッションの変更を行う機能
-  - CSIDriver policy (FSGroup)
-  - RootCAConfigMap
-    - BoundServiceAccountTokenVolumeから分離
-  - kubectl debug
-    - ただしエフェメラルコンテナはAlphaのままなので注意
-  - setHostnameAsFQDN
-    - Podのホスト名を完全修飾ドメイン名とする
-- Alpha
-  - CronJobコントローラーv2
-  - IPv4/IPv6デュアルスタックの再実装
-  - CSIServiceAccountTokenの導入
+### GA
+
+- SupportNodePidsLimit / SupportPodPidsLimit
+  - Node / Pod単位での消費可能なPID数の制限
+- CSI Volume Snapshot
+- TokenRequest / TokenRequestProjection
+  - ServiceAccountで発行したトークンをPodのVolumeに動的にマウントする機能
+- node.k8s.io APIグループがv1beta1からv1に昇格
+
+### Beta
+
+- API Priority / Fairness
+  - kube-apiserverが優先度に応じて受けたリクエストをカテゴライズするもの
+- Non-recursive Volume Ownership (FSGroup)
+  - fsgroup設定時であっても、必要な場合のみ再帰的なパーミッションの変更を行う機能
+- CSIDriver policy (FSGroup)
+- RootCAConfigMap
+  - BoundServiceAccountTokenVolumeから分離
+- kubectl debug
+  - ただしエフェメラルコンテナはAlphaのままなので注意
+- setHostnameAsFQDN
+  - Podのホスト名を完全修飾ドメイン名とする
+
+### Alpha
+
+- CronJobコントローラーv2
+- IPv4/IPv6デュアルスタックの再実装
+- CSIServiceAccountTokenの導入
 
 ## v1.19.0
 
 [kubernetes/CHANGELOG-1.19.md at master · kubernetes/kubernetes](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.19.md#whats-new-major-themes)
 
-- 非推奨APIを使用していた場合に警告を表示する機能の実装
+- 非推奨APIを使用していた場合に警告を表示するようになった
   - 警告はAdmission Webhooksで取得可能
 - API実装における新しいポリシーをv1.20に適用するとのアナウンス（ベータ機能のライフサイクル）
   - 9ヶ月以内にGAに到達しベータ版を削除するか、新しいベータ版を用意して以前のベータ版を廃止する。のどちらか
@@ -162,30 +179,35 @@ K8sのChangeLogを読んでいく。なお読むのは1.19以降のみ。
 - EndpointSlicesのデフォルト有効化
 - Kubernetesコンテナイメージがコミュニティ管理下へ
 - Kubernetes Dashboardのv2がリリース
-- Kubernetesのサポートウィンドウを9ヶ月から1年へ延長
+- Kubernetesのサポートを9ヶ月から1年へ延長
 
-- GA
-  - Ingress
-  - seccomp（(Secure computing mode）
-- Beta
-  - KubeSchedulerConfiguration（kube-schedulerの振る舞いをカスタマイズ）
-    - [スケジューラーの設定 | Kubernetes](https://kubernetes.io/ja/docs/reference/scheduling/config/)
-  - CSI Migration - AzureDisk & vSphere
-  - Secret / ConfigMapをイミュータブルとしてマーク可能
-  - Windows向けCSI Proxy
-  - Windowsのcontainerdサポート
-- Alpha
-  - Pod/Nodeデバッグ用のCLIサポート拡張（既存Alpha機能の拡張）
-    - 対象Podに対してデバッグコンテナをサイドカーとして追加
-    - Nodeデバック用のPodを作成する
-      - ホスト側のネームスペースを使い、かつホストのrootをコンテナの/hostにマウントしたPodを作成するもの
-  - ストレージ容量のトラッキング
-    - CSIドライバー向けのストレージ容量をレポートするAPI追加
-  - CSIヘルスモニタリング
-    - CSIドライバーが下位レイヤーのストレージから異常なボリュームの状態をK8sと共有できるようになった
-  - Generic ephemeral volumes
-    - エフェメラルボリュームのプラグインサポート
-    - ダイナミックプロビジョニングをサポートしたストレージドライバをエフェメラルボリュームとして使用できるようになった
-  - 構造化ロギング
-    - コンポーネントのログを構造化
-    - プレーンテキスト → JSONか？
+### GA
+
+- Ingress
+- seccomp（(Secure computing mode）
+
+### Beta
+
+- KubeSchedulerConfiguration（kube-schedulerの振る舞いをカスタマイズ）
+  - [スケジューラーの設定 | Kubernetes](https://kubernetes.io/ja/docs/reference/scheduling/config/)
+- CSI Migration - AzureDisk & vSphere
+- Secret / ConfigMapをイミュータブルとしてマーク可能
+- Windows向けCSI Proxy
+- Windowsのcontainerdサポート
+
+### Alpha
+
+- Pod/Nodeデバッグ用のCLIサポート拡張（既存Alpha機能の拡張）
+  - 対象Podに対してデバッグコンテナをサイドカーとして追加
+  - Nodeデバック用のPodを作成する
+    - ホスト側のネームスペースを使い、かつホストのrootをコンテナの/hostにマウントしたPodを作成するもの
+- ストレージ容量のトラッキング
+   - CSIドライバー向けのストレージ容量をレポートするAPI追加
+- CSIヘルスモニタリング
+  - CSIドライバーが下位レイヤーのストレージから異常なボリュームの状態をK8sと共有できるようになった
+- Generic ephemeral volumes
+  - エフェメラルボリュームのプラグインサポート
+  - ダイナミックプロビジョニングをサポートしたストレージドライバをエフェメラルボリュームとして使用できるようになった
+- 構造化ロギング
+  - コンポーネントのログを構造化
+  - プレーンテキスト → JSONか？

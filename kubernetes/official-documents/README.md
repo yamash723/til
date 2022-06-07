@@ -101,9 +101,9 @@ Podの集合で実行されているアプリケーションをネットワー�
 ServiceSpecのtype指定で公開方法を変えることができる
 
 - ClusterIP (既定値)
-  - クラスター内の内部IPでServicを公開。クラスター内からのみ到達可能
+  - クラスター内の内部IPでServiceを公開。クラスター内からのみ到達可能
 - NodePort
-    - NAT使用。<NodeIP>:<NodePort>でクラスター外部からアクセス可能
+    - NAT使用。NodeIP:NodePortでクラスター外部からアクセス可能
     - ClusterIPのスーパーセット
 - LoadBalancer
     - 外部ロードバランサを作成し固定の外部IPを割り当てる

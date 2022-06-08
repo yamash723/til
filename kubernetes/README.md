@@ -83,7 +83,7 @@
 
 ### リソース
 
-※とりあえずざっと目についたものも
+※とりあえずざっと目についたもの
 
 - Pod
   - コンテナ環境
@@ -130,3 +130,35 @@ AWSリソースをTerraform、アプリをK8s、CI/CDをGithubActionsで行う�
   - `kubectl api-resources` で確認可能
 - 公式のチートシートがある
   - [kubectlチートシート | Kubernetes](https://kubernetes.io/ja/docs/reference/kubectl/cheatsheet/)
+
+
+### kubectlプラグイン
+
+- stern
+  - 複数Pod / 複数コンテナをtail（Pod単位で色分けしてくれるので可読性Good）
+- kube-iexec
+  - 実行中PodへexecするときのPodの選択をインタラクティブにしてくれる
+- kubectl-view-allocations
+  - Nodeや実行中Podのリソース割当を一覧表示
+  - 類似に kube-capacity もある
+- kubectl-images
+  - Podが使用しているImageを一覧表示
+- ksniff
+  - tcpdump と Wireshark で特定Podのキャプチャを実施
+- kubie
+  - 複数のシェルで異なるコンテキストを扱える
+- kubectl-tree
+  - オブジェクト間の所有関係を調べる
+
+### 便利ツール
+
+
+- K9s
+  - クラスタとやりとりするためのターミナルUI
+  - popeyeというK8sサニタイザーの結果も出してくれる
+- Lens
+  - リソースのモニタリング、デプロイをすることが出来るデスクトップアプリ
+- kind
+  - ローカルクラスタの実行
+- minikube
+  - ローカルクラスタの実行

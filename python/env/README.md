@@ -7,7 +7,7 @@ asdfを使用
 ```bash
 asdf install python 3.10.5
 asdf global python 3.10.5
-asdf reshim python                              
+asdf reshim python
 
 
 echo -e "\nsource "(brew --prefix asdf)"/asdf.fish" >> ~/.config/fish/config.fish

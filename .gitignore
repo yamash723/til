@@ -1,2 +1,3 @@
 !.gitkeep
 **/target
+**/__pycache__

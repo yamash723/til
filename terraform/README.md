@@ -21,6 +21,10 @@ terraform apply
 terraform destroy
 ```
 
+## ベストプラクティス
+
+[Terraform を使用するためのベスト プラクティス  |  Google Cloud](https://cloud.google.com/docs/terraform/best-practices-for-terraform?hl=ja)
+
 ## CloudFormationとの比較
 
 [AKIBA.AWS ONLINE #03 -「TerraformとCloudFormationどちらを採用すべき？」というタイトルで登壇しました | DevelopersIO](https://dev.classmethod.jp/articles/terraform-or-cloudformation/)

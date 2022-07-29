@@ -106,6 +106,16 @@ $ kubectl label pods sample-label label3=val3
 $ kubectl label pods sample-label label3=val3 --overwrite
 $ kubectl label pods sample-label label3- # 削除
 
+# rollout
+$ kubectl rollout status deployment xxxxx
+$ kubectl rollout history deployment xxxxx
+$ kubectl rollout undo deployment xxxxx --to-revision 1 # 基本使わない
+$ kubectl rollout pause deployment xxxxx # 更新の一時停止
+$ kubectl rollout resume deployment xxxxx # 更新の再開
+
+# 手動でDeploymentを作成する
+$ kubectl create deployment sample-deployment-by-cli --image nginx:1.16
+
 # エフェメラルコンテナを使ったデバッグ
 $ kubectl debug sample-pod --image=amsy810/tools:v2.0 -it -- bash
 
@@ -120,6 +130,9 @@ $ kubectl cp sample-pod:/etc/hostname ./hostname
 
 # Podがうまく立ち上がらない場合、ENTRYPOINTを上書きして手動実行する方法もある
 $ kubectl run --image=nginx:1.16 --restart=Never --rm -it sample-debug --command -- bash
+
+# ReplicaSetのスケーリング
+$ kubectl scale replicaset sample-rs --replicas 5
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -144,3 +157,49 @@ $ kubectl run --image=nginx:1.16 --restart=Never --rm -it sample-debug --command
 - OSSのSternを使うとログの確認が楽になる
 - krewを使って各種プラグインを入れると便利
 - Podが起動しないデバッグの際、`kubectl run` コマンドでENTRYPOINTを上書きして立ち上げるテクニックがある
+
+### Workloads APIs
+
+#### Pods
+
+- 同一Pod内のコンテナはIPアドレスを共有しているのでlocalhostで通信可能
+- サブコンテナはプロキシや設定値の動的な書き換え、ローカルキャッシュやSSL終端用など
+- nginxとredisのようなメインコンテナを1つのPodに入れるのは推奨されない
+- デザインパターン
+  - サイドカー
+    - GitのSyncやログの転送などの補助的なもの
+  - アンバサダー
+    - 外部のシステムと接続する際の代理
+  - アダプタ
+    - 外部からのリクエストに対して差分を吸収する
+- `hostNetwork` オプションを使うことでホストのネットワークを使用してPodを起動できる
+  - ホスト側のネットワークを監視したりするエッジケースで使うこと
+  - この状態でクラスタ内のDNSを参照させたい場合は `dnsPolicy` を　`ClusterFirstWithHostNet` にする必要がある
+- DNSサーバーの設定を手動で設定する場合、 `spec.dnsPolicy: None` にして `dnsConfig` を設定する
+  - その他Nodeの設定を引き継ぐ、などもある
+  - デフォルトはクラスタ内のDNSに問い合わせる
+- `spec.hostAliases` でPod内のすべてのhostsを書き換えることができる
+- `spec.workingDir` でWorkingディレクトリを上書きすることができる
+
+#### ReplicaSet / ReplicationController
+
+- ReplicationControllerという名称からReplicaSetという名称に変わっている
+- Podのレプリカを作成し、指定された数のPodを維持するもの
+
+#### Deployment
+
+- 複数のReplicaSetを管理してローリングアップデートやロールバックを実現するリソース
+  - Deployment -> ReplicaSet -> Pod の関係
+- apply時に `--record` オプションを指定する事でコマンドの実行履歴を保持することができる
+  - rollback時の参考情報に使えるが、業務上利用することは殆どない
+  - `Flag --record has been deprecated, --record will be removed in the future`
+- 変更があった場合ReplicaSetが作成されるが、この変更はPodの内容の変更が必要
+  - `spec.template` に変更があると作成される
+- `rollout` することができるが、それよりは古い定義のマニフェストをapplyしたほうがいい
+- Deploymentのアップデート戦略は2種類
+  - `Recreate`
+    - 一度全Podを削除して作り直す。早いしリソースを節約できるがダウンタイムが発生する
+  - `RollingUpdate`
+    - いわゆるローリングアップデート
+    - 許容される不足Pod数や超過Pod数を指定することもできる
+      - Pod数やパーセンテージでの指定も可能

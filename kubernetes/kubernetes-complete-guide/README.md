@@ -133,6 +133,12 @@ $ kubectl run --image=nginx:1.16 --restart=Never --rm -it sample-debug --command
 
 # ReplicaSetのスケーリング
 $ kubectl scale replicaset sample-rs --replicas 5
+
+# CronJobの一時停止
+$ kubectl patch  cronjob sample-cronjob -p '{"spec":{"suspend":true}}'
+
+# CronJobを元に任意のタイミングでJobを実行
+$ kubectl create job sample-job-from-cronjob --from cronjob/sample-cronjob
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -203,3 +209,51 @@ $ kubectl scale replicaset sample-rs --replicas 5
     - いわゆるローリングアップデート
     - 許容される不足Pod数や超過Pod数を指定することもできる
       - Pod数やパーセンテージでの指定も可能
+
+#### DaemonSet
+
+- 各NodeにPodを1つづつ配置するリソース。ReplicaSetの特殊な形
+  - レプリカ数の指定などはできないが、「特定Nodeには配置しない」ということはできる
+- FluentdやDatadogなど、全Nodeで動作させたいプロセスのために使う
+- アップデートはローリングアップデートの他に `OnDelete` がある
+  - 即時更新はせず、Podが死んだときに、更新するもの
+
+#### StatefulSet
+
+- ステートフルなワークロード用。ReplicaSetの特殊な形
+  - Pod名のサフィックスが数字のインデックスが付与されたものになり、Pod名が変わらない
+  - PersistentVolumeを使ってデータの永続化が可能
+- `volumeClaimTemplates` を指定してPodにVolumeをアタッチ
+- 複数のPodが起動する場合、基本順番に作られていく。インデックス番号0から順番に
+  - ただしこれを並列にすることも可能
+- ローリングアップデートもあるが、少し特殊なので実際やるときは要調査
+
+#### Job
+
+- N並列で実行しながら、指定された回数のコンテナの実行を保証するリソース
+  - ReplicaSetとの違いは「起動するPodが停止することを前提にして作られているかどうか」
+- labelとselectorはk8sの方でuuidを生成するため、明示的に付与することは非推奨
+- `restartPolicy` を使用して失敗時の動作を変更できる
+  - `Never`
+    - Podが死んだ場合、別のPodを立ち上げる
+  - `OnFailure`
+    - Podを再利用して実行する。NodeやIPに変更はないが、永続化していないデータは消失する
+- `backoffLimit` で失敗数の許容ラインを設定できる
+- 並列実行することも可能だが、成功数5のときに並列7にしても5つのPodしか上がらない
+- 基本、成功回数はあとから変更不可（applyが必要）
+
+#### CronJob
+
+- CronJobとJobは、DeploymentとReplicaSetのような関係と同じ
+- CronJobを元に任意のタイミングでJobを実行することも可能
+- `spec.concurrencyPolicy` を指定することで同時実行の制御ができる
+  - `Alloq` デフォルト
+    - 制限を行わない
+  - `Forbid`
+    - 同時実行をしない
+  - `Replace`
+    - 前のJobをキャンセルしてJobを実行する
+- Kubernetes Masterがダウンしている場合など、Jobの実行が遅延したときの許容秒数を指定できる
+  - デフォルトはどんなに遅れたとしてもJobを作成するようになっている
+- 作成したJobを保存する数も指定できる
+  - ログ調査などに役立つが、本番ではログ集約基盤にまとめることがおすすめ

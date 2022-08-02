@@ -139,6 +139,10 @@ $ kubectl patch  cronjob sample-cronjob -p '{"spec":{"suspend":true}}'
 
 # CronJobを元に任意のタイミングでJobを実行
 $ kubectl create job sample-job-from-cronjob --from cronjob/sample-cronjob
+
+# Secretの作成や取得
+$ kubectl create secret generic --save-config sample-db-auth --from-file=./username 
+$ kubectl get secret sample-db-auth -o json | jq -r .data.username | base64 --decode
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -322,3 +326,90 @@ $ kubectl create job sample-job-from-cronjob --from cronjob/sample-cronjob
   - IngressClassを設定することで分離ができる
     - 起動時にオプションを渡す、もしくはIngressリソースにアノテーションを付与する
     - このへんは今後のアップデートで改善予定
+
+### Config & Storage APIs
+
+####  環境変数
+
+- `env` / `envFrom` でPodテンプレートにわたす事ができる
+- 情報源は5種類
+  - 静的設定
+  - Podの情報
+    - `valueFrom.fieldRef.fieldPath` などで指定
+  - コンテナの情報
+    - `valueFrom.resourceFieldRef.containerName` などで指定
+  - Secretリソースの機密情報
+  - ConfigMapの設定値
+- `args` などで環境変数を使用する場合、 `$()` で展開する
+
+####  Secret
+
+- Opaque
+  - 場合1MBまで値を保存可能
+  - Base64で保存されてるため取得時はデコードが必要
+- TLS
+  - Ingressから参照可能
+- Dockerレジストリ
+  - コンテナレジストリの認証に使用可能。手動で作るのが楽
+  - イメージを取得する場合の認証情報の指定は、Podのspecで `imagePullSecrets` を指定する
+- Basic認証
+- SSH認証
+  - 環境変数として渡すか、Volumeとしてマウントの2種類を選択できる
+  - Volumeとしてマウントした場合は動的な更新が可能になる
+
+#### ConfigMap
+
+- Key-Valueで設定情報などを保存する。nginx.confなどの設定ファイル自体を保存することも可能
+  - バイナリもOK
+- 格納可能サイズは1MB
+- 環境変数として渡すか、Volumeとしてマウントの2種類を選択できる
+  - `configMapKerRef` で環境変数として参照
+- スクリプトを保存しておき、ConfigMapをマウントして実行する、という技も使える
+
+#### PersistentVolumeClaim
+
+- PersistentVolumeClaimとはなにか
+  - PersistentVolume
+    - 外部のVolumeを提供するシステムと連携して、新規Volume作成や削除を行うもの
+  - PersistentVolumeClaim
+    - 作成したPersistentVolumeをPodから使用するためのアサインを行うもの
+
+#### Volume
+
+- emptyDir
+  - Podの一時的なディスク領域。Podが死ぬと消える
+  - `sizeLimit` で制限をかけることも可能
+  - `medium`  に `Memory` を指定することで高速な `tmpfs` 領域を使用可能
+- hostPath
+  - Node上の領域にコンテナをマッピングするもの
+- downwardAPI
+  - Podの情報などをファイルとして配置するプラグイン
+  - ConfigMapなどのMountと同じ
+- projected
+  - secretやConfigMapなどのボリュームマウントを1箇所に集約するもの
+
+#### PersistentVolume
+
+- 厳密にはClusterリソースに含まれる
+- 基本的にネットワーク越しにディスクをアタッチするタイプ
+- CSI（Container Storage Interface）経由でさまざまなプロバイダを利用可能
+- PersistentVolumeClaimからの要求があった場合、要求サイズを満たす最小サイズのPersistentVolumeを割り当てる
+- Reclaim Policy
+  - 利用し終わったあとの処理方法
+  - 種類
+    - Delete
+      - 実態を削除。外部ボリュームのDynamicProvisioning時に利用されることが多い
+    - Retain
+      - 消さずに保持。ただし他のPodなどにMountされることはない
+    - Recycle
+      - `rm -rf /` してから再利用する
+      - 廃止が検討されているので非推奨
+- DynamicProvisioning
+  - PersistentVolumeClaimが発行されたタイミングで動的にPersistentVolumeを作成する
+  - リサイズがサポートされている場合リサイズを行うことが可能
+  - 事前に `allowVolumeExpantion: true` を指定しておくことが必要
+- ファイルシステムではなくブロックデバイスとして作成も可能
+- PersistentVolumeClaimからスナップショットをとることも可能
+- StatefulSetの場合 `spec.volumeClaimTemplate` で別途定義することなくPersistentVolumeClaimを作成可能
+- `subPath` を使用することで特定ディレクトリをルートにすることができる
+  - 同一Podのコンテナ別でルートを設定する場合などに使用

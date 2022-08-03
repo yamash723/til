@@ -56,6 +56,9 @@ kind create cluster --image kindest/node:v1.24.1
  ### kubectl
 
 ```bash
+# Namespaceの作成
+$ kubectl create namespace sample-namespace
+
 # マニフェストファイルの適用
 $ kubectl apply -f xxx.yaml
 $ kubectl apply -f . # ディレクトリ内のファイルをファイル名順に適用
@@ -413,3 +416,12 @@ $ kubectl get secret sample-db-auth -o json | jq -r .data.username | base64 --de
 - StatefulSetの場合 `spec.volumeClaimTemplate` で別途定義することなくPersistentVolumeClaimを作成可能
 - `subPath` を使用することで特定ディレクトリをルートにすることができる
   - 同一Podのコンテナ別でルートを設定する場合などに使用
+
+### Cluster APIs / Metadata APIs
+
+- Cluster APis
+  - セキュリティ周りの設定やクォータ設定など、クラスタ制御に関わるリソース
+  - Node / Namespace / PersistentVolume / ResourceQuota / etc....
+- Metadata APIs
+  - クラスタ上にコンテナを起動させるのに利用するリソース
+  - LimitRange / HorizontalPodAutoscaler / PodDisruptionBudget

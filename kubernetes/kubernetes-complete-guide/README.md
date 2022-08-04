@@ -425,3 +425,54 @@ $ kubectl get secret sample-db-auth -o json | jq -r .data.username | base64 --de
 - Metadata APIs
   - クラスタ上にコンテナを起動させるのに利用するリソース
   - LimitRange / HorizontalPodAutoscaler / PodDisruptionBudget
+
+### リソース管理とオートスケーリング
+
+- CPUのリソース制限
+  - 周波数ではなく1vCPU = 1000msecとする
+  - Podの `resources.requests` 配下はリソースの下限になる。空きNodeに指定した量のリソースがない場合はスケジューリングされない
+  - Limitは上限
+    - Limitだけを設定した場合、Requestも同様の数値が設定される
+- Storage
+  - kubectl logsコマンドで出力するためのログも内部で保管されており、これもEphemeral Storageに含まれる
+  - StorageのLimitを超えてしまうとPodがEvictされる
+- 各リソースは完全に枯渇するとクラスター自体やNode全体に影響を及ぼす。それを回避するためにシステム向けのリソースが確保されている
+  - `kube-reserved` / `system-reserved`
+  - Eviction Managerがシステム全体が高負荷にならないように管理している
+    - Eviction Thresholdに `soft` / `hard` の2種類がある
+    - `soft` の場合はSIGTERM、`hard` の場合はSIGKILLが送られる
+
+### Cluster Autoscaler
+
+- Pending状態のPodが出てきたタイミングで発動する
+  - Requestが高い場合、実際の負荷がそうでもないのに新規でNodeが追加される
+  - 大事なこと
+    - RequestとLimitに顕著な差をつけないこと
+    - Requestを大きくしすぎないこと
+  - OOMが発生しない程度のリソース割当、が目安
+
+### LimitRange
+
+- Namespaceに対して各種制限のデフォルト値を設定するもの
+- typeでPod、Container、PersistentVolumeとそれぞれに設定できる
+
+### ResourceQuota
+
+- Namespace単位で理想可能なリソースを制限できる
+- configMapは10個まで、など
+
+### HorizontalPodAutoscaler
+
+- Deployment / ReplicaSet / ReplicationControllerのレプリカ数をCPU負荷などに応じてスケールさせるリソース
+  - 30秒に1回チェックを行う
+    - スケールインは最大5分に1回
+    - スケールアウトは最大3分に1回
+- 指定したリソース状況（CPU使用率50%など）に合わせる形でスケールする
+  - CPU以外のリソースを使う場合、Prometheusなどのメトリクスサーバと連携する必要がある
+- `spec.behavior` でオートスケールの頻度などをリソース単位で指定できるようになった
+
+### VerticalPodAutoscaler
+
+- コンテナに割り当てるCPU/メモリのリソースを自動的にスケールさせる
+- コンテナの名称を指定し、オートスケールの有効化設定と割当可能なリソースの成約をかけることができる
+  - 

@@ -146,6 +146,13 @@ $ kubectl create job sample-job-from-cronjob --from cronjob/sample-cronjob
 # Secretの作成や取得
 $ kubectl create secret generic --save-config sample-db-auth --from-file=./username 
 $ kubectl get secret sample-db-auth -o json | jq -r .data.username | base64 --decode
+
+# Nodeをスケジュール対象から外す / 対象に戻す
+$ kubectl cordon node-name
+$ kubectl uncordon node-name
+
+# NodeからPodを排出する
+@ kubectl drain node-name --force --ignore-deamonsets
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -537,3 +544,20 @@ $ kubectl get secret sample-db-auth -o json | jq -r .data.username | base64 --de
     - preStopで数秒sleep入れるといった手がある
     - またGracePeriodSecondsの秒内に処理を終わらせる必要ガある。これを超えるとSIGKILLが飛んでくる
 - kubectlでPodを削除する場合、即座に削除したければ--forceをつけるといい
+
+## メンテナンスとノードの停止
+
+- Nodeをスケジュール対象から外す場合は `kubectl cordon` を使用する
+- 外しただけでは新規Podのスケジュールがされないだけで、すでにスケジュールされているPodはそのまま
+  - `kubectl drain` でPodを排出する
+    - drain実行時にスケジュール対象から外れるようになるため、事前にcordonは実行しておく必要は無い
+  - ローカルストレージは削除される
+
+## PodDisruptionBudget(PDB)による安全な退避
+
+- Nodeが排出処理を行う際、特定Deployment配下のレプリカが一気に停止するとダウンタイムが発生する可能性がある
+- 回避策として、排出時に停止できるPodの数を指定することが可能
+  - `minAvailable` 最小起動数
+  - `maxUnavailable` 最大停止数
+  - なおパーセンテージでも指定可能
+    - AutoScalerなどでPod数が変動する場合はパーセンテージ設定がおすすめ

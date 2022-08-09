@@ -152,7 +152,11 @@ $ kubectl cordon node-name
 $ kubectl uncordon node-name
 
 # NodeからPodを排出する
-@ kubectl drain node-name --force --ignore-deamonsets
+$ kubectl drain node-name --force --ignore-deamonsets
+
+# Taintsを付与/削除する
+$ kubectl taint node xxxxxx env=prd:NoSchedule
+$ kubectl taint node xxxxxx env-
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -561,3 +565,28 @@ $ kubectl uncordon node-name
   - `maxUnavailable` 最大停止数
   - なおパーセンテージでも指定可能
     - AutoScalerなどでPod数が変動する場合はパーセンテージ設定がおすすめ
+
+## 高度で柔軟なスケジューリング
+
+- フィルタリングとスコアリング
+  - フィルタリング
+    - スケジュールするPodが割当可能なノードを計算
+    - リソースの空きがあるか、指定されたラベルかどうかなど
+  - スコアリング
+    - フィルタリング後のノードを順位づけし、適したノードを計算する
+    - できるだけ分散したり、利用するイメージが既にPullされている、などで
+- マニフェストで指定するスケジューリング
+  - 配置したいノードの指定
+    - nodeSelector: 簡易的なAffinity
+    - Node Affinity: 特定のノード上で実行
+    - Node AntiAffinity: 特定のノード以外で実行
+    - Inter-Pod Affinity: 特定のPodがいるドメイン上で実行
+    - Inter-Pod AntiAffinity: 特定のPodがいないドメイン上で実行
+  - 配置したくないノードの指定
+    - Taints
+      - Effectで動作を指定可能
+        - PreferNoSchedule: 可能な限りスケジューリングしない
+        - NoSchedule: スケジューリングしない。既存Podはそのまま
+        - NoExecute: 実行を許可しない。既存Podは停止
+    - Tolerations
+- PriorityClassでPodの優先度と退避を指定できる

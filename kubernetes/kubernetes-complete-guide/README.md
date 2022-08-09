@@ -157,6 +157,9 @@ $ kubectl drain node-name --force --ignore-deamonsets
 # Taintsを付与/削除する
 $ kubectl taint node xxxxxx env=prd:NoSchedule
 $ kubectl taint node xxxxxx env-
+
+# ServiceAccountの作成
+$ kubectl create serviceaccount sample-serviceaccount
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -590,3 +593,68 @@ $ kubectl taint node xxxxxx env-
         - NoExecute: 実行を許可しない。既存Podは停止
     - Tolerations
 - PriorityClassでPodの優先度と退避を指定できる
+
+## セキュリティ
+
+### ServiceAccount
+
+- UserAccount
+  - IAMなどのクラウドプロバイダの仕組みとリンクしている。K8sの管理対象ではない
+  - クラスタレベルなのでNamespaceの影響をうけない
+- ServiceAccount
+  - Namespaceに紐づくリソース
+  - Pod起動時には必ずServiceAccountを割り当てる必要がある
+- `service-account-token` タイプのSecret
+  - 自動で作成されるが自作も可能。トークンと証明書から構成
+  - Pod上にマウントされ、それを使ってPod内からK8sの操作ができる
+  - なお、`imagePullSecrets`　が指定されたServiceAccountが割り当てられたPodが起動した場合、自動的にPodの `imagePullSecrets` として利用される
+
+### RBAC
+
+- Role Based Access Control
+  - どういった操作を行うかのRoleを作成し、ServiceAccountなどのUserに対して紐付ける
+  - AggregationRuleを利用することで複数のRoleを集約したRoleを作成できる
+- NamespaceレベルとClusterレベルのものがある
+
+### SecurityContext　/ PodSecurityContext
+
+- 個々のコンテナに対するセキュリティの設定
+  - 特権コンテナとして実行するなど
+- PodSecurityContext
+  - Podに対するセキュリティ設定
+- `sysctls` でカーネルパラメータの指定が可能
+
+### PodSecurityPolicy
+
+- クラスタに対してセキュリティポリシーによる制限を行うリソース
+- 作成可能なPodの制限やSecurityContextなどで設定した項目のデフォルト値設定など
+  - ホワイトリスト形式
+
+### NetworkPolicy
+
+- Pod同士が通信する際のトラフィックルールを規定するもの
+- すべてのK8s環境で利用できるわけではなくCNIプラグインなどが必要
+- IngressとEgressで成り立っている
+  - Ingress: インバウンド方向のトラフィックルール
+  - Egress: アウトバウンド方向のトラフィックルール
+  - Namespaceごとに作成する必要あり
+  - Pod / Namespace / CIDR単位で通信の許可対象を指定可能
+
+### PodPreset
+
+- Podを作成する際のデフォルト設定を埋め込むリソース
+  - 自動的に環境変数を埋め込む
+  - 特定領域にPVをマウントするなど
+- Podの定義と衝突する場合はPodPresetの書き換えは行われないことに注意
+
+### Secretリソースの暗号化
+
+- `kubesec`
+  - AWS KMSなどのクラウドプロバイダの機能を使ってSecretの暗号化をすることが可能
+    - ファイル全体ではなく、構造を保ったまま値だけ暗号化
+- `SealedSecret`
+  - 暗号化された独自のリソースをクラスタに登録しておく
+    - 公開鍵と秘密鍵
+  - クラスタ内部で復号化される
+- `ExternalSecret`
+  - AWS Secrets Managerなど外部のSecret Managerに保存されてる認証情報を読み込む

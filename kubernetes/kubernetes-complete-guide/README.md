@@ -160,6 +160,14 @@ $ kubectl taint node xxxxxx env-
 
 # ServiceAccountの作成
 $ kubectl create serviceaccount sample-serviceaccount
+
+# Helm
+$ helm repo add xxxxxx
+$ helm repo list
+$ helm search repo xxxxx
+$ helm test
+$ helm install xxxx
+$ helm template 
 ```
 
 - `kubernetes create` は `--save-config` オプションがない場合、適用したマニフェスト情報を保持しない
@@ -658,3 +666,13 @@ $ kubectl create serviceaccount sample-serviceaccount
   - クラスタ内部で復号化される
 - `ExternalSecret`
   - AWS Secrets Managerなど外部のSecret Managerに保存されてる認証情報を読み込む
+
+## OSS
+
+- Helm
+  - パッケージマネージャー
+- Kustomize
+  - マニフェストのテンプレーティングツール
+  - namespaceの上書きや、prefix/suffixの付与などが可能
+  - Overlay機能によってパッチを当てることが可能
+    - 環境によってresourceを書き換えたり

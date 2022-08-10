@@ -691,3 +691,11 @@ $ helm template
       - 特定のコンテナだけパフォーマンスが悪いなど
 - Prometheus
   - 一旦無視
+
+## コンテナログの集約
+
+- Fluentd
+  - DeamonSetで各ノードにPodを配置する方法が一般的
+- Datadog Logs
+  - Agentが直接コンテナの標準出力から収集し、Datadogに送っている
+  - 課金対象となるログのフィルタリング機能付き

@@ -699,3 +699,27 @@ $ helm template
 - Datadog Logs
   - Agentが直接コンテナの標準出力から収集し、Datadogに送っている
   - 課金対象となるログのフィルタリング機能付き
+
+## Kubernetes環境でのCI/CD
+
+- Kubeval
+  - マニフェストファイルのYamlがAPIバージョンに準拠しているかの検証用OSS
+  - ワンバイナリで実行できるのがいいところ
+- Conftest
+  - マニフェストファイルのユニットテストを行うOSS
+  - Rego言語でテストを実装する
+- OpenPolicyAgent / GateKeeper
+  - マニフェストのポリシーチェック
+  - K8sのAdmissionControllerとして動作するので、CI/CDを通さない適用を検知できる
+- ArgoCD
+  - K8s上にApplicationリソースを作成し、特定リポジトリの特定パスにあるファイルをクラスタに適用するOSS
+    - 指定しておき、それを自動で動悸するイメージ
+  - WebUIもあるので適用状況はそこから確認するのが吉
+  - 同期の前後でリソースの作成・削除を行うHookや、Slack通知、同期前にマイグレーションの実行などを行うこともできる
+  - なおWeaveFluxというツールもあり、ArgoCDは統合が進められている
+- Telepresence
+  - リモートのK8sクラスタを利用してローカル開発を行うもの
+  - ローカルから直接K8sクラスタのPodにアクセスできるイメージ
+- Scaffold
+  - Googleが開発してDocker/K8s向けのビルドとデプロイを自動化する
+  - リポジトリに変化があるとDockerイメージのビルド、プッシュ、K8sクラスタへのデプロイと行う

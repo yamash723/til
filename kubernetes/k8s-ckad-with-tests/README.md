@@ -24,3 +24,8 @@ https://eng-blog.iij.ad.jp/archives/9998#%e3%83%98%e3%83%83%e3%83%89%e3%83%ac%e3
 - これをStatefulSetで行った場合、各Pod別のDNSを発行する形になる
   - `sample-statefulset-headless-0.sample-headless.default.svc.cluster.local`
   - DBなどmasterやslaveといった形でアクセスする先を切り替えるためのもの
+
+## Nodeに対するデバッグ
+
+- `kubectl debug node/{nodeName} -it --image=busybox` でデバック可能
+- Podをたてて、そこに対して `kubectl cp` を行うことでNodeとファイルのやり取りが可能

@@ -7,6 +7,8 @@
 - [GitHub - kislyuk/yq: Command-line YAML, XML, TOML processor - jq wrapper for YAML/XML/TOML documents](https://github.com/kislyuk/yq)
   - yaml向けのjqコマンドのラッパー
   - [yqコマンド(jq wrapper for YAML)使い方備忘録](https://zenn.dev/gkz/articles/yq-beginners-guide)
+- [charmbracelet/gum: A tool for glamorous shell scripts 🎀](https://github.com/charmbracelet/gum)
+  - CLIでリッチなフィルター、選択などの機能が使える便利ツール
 
 ## DB
 

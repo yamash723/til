@@ -9,6 +9,8 @@
   - [yqコマンド(jq wrapper for YAML)使い方備忘録](https://zenn.dev/gkz/articles/yq-beginners-guide)
 - [charmbracelet/gum: A tool for glamorous shell scripts 🎀](https://github.com/charmbracelet/gum)
   - CLIでリッチなフィルター、選択などの機能が使える便利ツール
+- [ericchiang/pup](https://github.com/ericchiang/pup)
+  - CLIのHTMLパーサー
 
 ## DB
 
@@ -23,3 +25,6 @@
 
 - [readme.so](https://readme.so/ja/editor)
   - READMEのジェネレータ
+- [jsonhero](https://jsonhero.io/)
+  - JSONを見やすくしてくれる。URLだったらプレビュー出したりしてくれる
+  - ローカルでも動く

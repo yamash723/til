@@ -11,6 +11,8 @@
   - CLIでリッチなフィルター、選択などの機能が使える便利ツール
 - [ericchiang/pup](https://github.com/ericchiang/pup)
   - CLIのHTMLパーサー
+- [AWSume](https://awsu.me/)
+  - スイッチロール用のCLIツール。MFAもできて便利
 
 ## DB
 
